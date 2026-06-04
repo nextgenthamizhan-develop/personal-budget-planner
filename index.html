@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capitalist | Personal Finance, Budget & Accounting</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-header-wrapper">
+          <div class="logo-container">
+            <div class="logo-icon">C</div>
+            <span class="logo-text">Capitalist</span>
+          </div>
+          <!-- Mobile Toggle Button -->
+          <button class="menu-toggle-btn" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" style="width:24px; height:24px;">
+              <circle cx="12" cy="5" r="2.25" />
+              <circle cx="12" cy="12" r="2.25" />
+              <circle cx="12" cy="19" r="2.25" />
+            </svg>
+          </button>
+        </div>
+        
+        <ul class="nav-links">
+          <li>
+            <a class="nav-item active" data-tab="dashboard">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a class="nav-item" data-tab="budget">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+              </svg>
+              Budget Planner
+            </a>
+          </li>
+          <li>
+            <a class="nav-item" data-tab="loans">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+              </svg>
+              Loans Tracker
+            </a>
+          </li>
+          <li>
+            <a class="nav-item" data-tab="accounting">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.33-1A1.5 1.5 0 0018 9h-3m-6 0H6a1.5 1.5 0 00-1.5 1.33V21M3 21h18M12 9.75V3" />
+              </svg>
+              Accounting
+            </a>
+          </li>
+          <li>
+            <a class="nav-item" data-tab="reports">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
+              Reports & Export
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-footer">
+        <p>Capitalist v1.0</p>
+        <p style="font-size: 0.7rem; margin-top: 0.25rem;">Secure & Local Storage</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      <header>
+        <div>
+          <h1 id="page-title">Financial Dashboard</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Real-time overview of your local accounting system.</p>
+        </div>
+        <div class="flex-between gap-1" style="width: auto;">
+          <!-- Currency Settings -->
+          <div class="date-indicator" style="gap: 0.5rem; padding: 0.5rem 1rem;">
+            <label for="currency-selector" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted);">Currency:</label>
+            <select id="currency-selector" class="currency-dropdown" onchange="handleCurrencyChange(this.value)">
+              <option value="USD">USD ($)</option>
+              <option value="LKR">LKR (Rs.)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="INR">INR (₹)</option>
+              <option value="JPY">JPY (¥)</option>
+            </select>
+          </div>
+          <!-- Date Display -->
+          <div class="date-indicator" id="current-date-indicator">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+            <span id="header-date">June 2, 2026</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============================================== -->
+      <!-- TAB: DASHBOARD -->
+      <!-- ============================================== -->
+      <section id="tab-dashboard" class="tab-content active">
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+          <div class="card card-accent-indigo" id="summary-net-worth">
+            <h4 class="card-title">Net Worth</h4>
+            <div class="card-value" id="val-net-worth">$0.00</div>
+            <div class="card-desc" id="desc-net-worth">Assets minus Liabilities</div>
+          </div>
+          <div class="card card-accent-success" id="summary-monthly-cashflow">
+            <h4 class="card-title">Monthly Cash Flow</h4>
+            <div class="card-value" id="val-cash-flow">$0.00</div>
+            <div class="card-desc" id="desc-cash-flow">Income vs Expenses this month</div>
+          </div>
+          <div class="card card-accent-danger" id="summary-daily-budget">
+            <h4 class="card-title">Daily Spending</h4>
+            <div class="card-value" id="val-daily-spend">$0.00</div>
+            <div class="card-desc" id="desc-daily-spend">Total spent today</div>
+          </div>
+          <div class="card card-accent-info" id="summary-loan-debt">
+            <h4 class="card-title">Active Loan Debt</h4>
+            <div class="card-value" id="val-loan-debt">$0.00</div>
+            <div class="card-desc" id="desc-loan-debt">0 active loans tracked</div>
+          </div>
+        </div>
+
+        <!-- Dashboard Layout Charts/Recent Activity -->
+        <div class="dashboard-layout">
+          <!-- Main Chart -->
+          <div class="card chart-card">
+            <div class="flex-between mb-1">
+              <h3 style="font-size: 1.1rem; font-weight: 600;">Monthly Budget & Expenses Overview</h3>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Current Month</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="dashboardChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- Quick Net Worth Gauge & Debt ratio -->
+          <div class="card chart-card">
+            <div class="flex-between mb-1">
+              <h3 style="font-size: 1.1rem; font-weight: 600;">Asset Allocation</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="allocationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-layout">
+          <!-- Recent Transactions list -->
+          <div class="card recent-activity-card">
+            <div class="flex-between mb-1">
+              <h3 style="font-size: 1.1rem; font-weight: 600;">Recent Transactions</h3>
+              <button class="btn btn-secondary btn-inline" onclick="navigateToTab('budget')">View All</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-transactions-body">
+                  <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-muted);">No transactions recorded yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Daily Advice -->
+          <div class="card">
+            <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Financial Insights</h3>
+            <div class="ledger-list" id="financial-insights-list">
+              <!-- Insights will populate dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB: BUDGET PLANNER -->
+      <!-- ============================================== -->
+      <section id="tab-budget" class="tab-content">
+        <div class="budget-columns">
+          
+          <!-- Column 1: Adding Transactions & Setup -->
+          <div class="flex-column gap-1">
+            <!-- Add Transaction Card -->
+            <div class="card mb-1">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Log Transaction</h3>
+              <form id="transaction-form" onsubmit="handleTransactionSubmit(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="trans-type">Type</label>
+                    <select id="trans-type" required onchange="renderCategoryDropdowns()">
+                      <option value="expense">Expense</option>
+                      <option value="income">Income</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="trans-amount">Amount ($)</label>
+                    <input type="number" step="0.01" min="0.01" id="trans-amount" placeholder="0.00" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="trans-category">Category</label>
+                    <select id="trans-category" required>
+                      <!-- Categories generated dynamically -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="trans-date">Date</label>
+                    <input type="date" id="trans-date" required>
+                  </div>
+                  <div class="form-group form-group-full">
+                    <label for="trans-desc">Description</label>
+                    <input type="text" id="trans-desc" placeholder="e.g., Target grocery run" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Transaction</button>
+              </form>
+            </div>
+
+            <!-- Set Monthly Budget Targets Card -->
+            <div class="card">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Set Budget Targets</h3>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem;">Allocate maximum monthly limits for each category.</p>
+              <form id="budget-target-form" onsubmit="handleBudgetTargetSubmit(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="budget-category">Category</label>
+                    <select id="budget-category" required>
+                      <!-- Categories generated dynamically -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="budget-limit">Monthly Limit ($)</label>
+                    <input type="number" step="1" min="0" id="budget-limit" placeholder="500" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-secondary">Update Target</button>
+              </form>
+            </div>
+
+            <!-- Manage Custom Categories Card -->
+            <div class="card">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Manage Categories</h3>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem;">Create custom categories for your income and expenses.</p>
+              
+              <form id="category-management-form" onsubmit="handleCategorySubmit(event)" style="margin-bottom: 1.25rem;">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="new-cat-type">Type</label>
+                    <select id="new-cat-type" required>
+                      <option value="expense">Expense</option>
+                      <option value="income">Income</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="new-cat-name">Category Name</label>
+                    <input type="text" id="new-cat-name" placeholder="e.g., Transport, Gift" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-secondary">Add Category</button>
+              </form>
+
+              <h4 style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem;">Current Categories</h4>
+              <div id="custom-categories-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 180px; overflow-y: auto; padding-right: 0.25rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Budget Progress & Transaction List -->
+          <div>
+            <!-- Monthly Budgets Progress List -->
+            <div class="card mb-1">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Monthly Category Tracker</h3>
+              <div class="budget-progress-list" id="category-progress-list">
+                <!-- Dynamically populated progress bars -->
+              </div>
+            </div>
+
+            <!-- Full Transaction Log -->
+            <div class="card">
+              <div class="flex-between mb-1">
+                <h3 style="font-size: 1.1rem; font-weight: 600;">Transaction History</h3>
+                <div class="flex-between gap-1" style="width: auto;">
+                  <select id="filter-category" onchange="renderTransactions()" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                    <option value="all">All Categories</option>
+                    <!-- Categories generated dynamically -->
+                  </select>
+                </div>
+              </div>
+              <div class="table-container" style="max-height: 350px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Desc</th>
+                      <th>Category</th>
+                      <th>Amount</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="full-transactions-body">
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB: LOAN TRACKER / MAINTENANCE -->
+      <!-- ============================================== -->
+      <section id="tab-loans" class="tab-content">
+        <div class="loan-container">
+          
+          <!-- Column 1: Add/Select Loan & Fast Payoff Tools -->
+          <div class="flex-column gap-1">
+            <div class="card mb-1">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Add New Loan</h3>
+              <form id="loan-form" onsubmit="handleLoanSubmit(event)">
+                <div class="form-grid">
+                  <div class="form-group form-group-full">
+                    <label for="loan-name">Loan Name</label>
+                    <input type="text" id="loan-name" placeholder="Student Loan, Car Loan, Home Mortgage" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="loan-principal">Principal Amount</label>
+                    <input type="number" step="0.01" min="1" id="loan-principal" placeholder="10000" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="loan-rate">Annual Interest Rate (%)</label>
+                    <input type="number" step="0.01" min="0" max="100" id="loan-rate" placeholder="5.5" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="loan-term">Term (months)</label>
+                    <input type="number" min="1" id="loan-term" placeholder="36" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="loan-interest-type">Interest Type</label>
+                    <select id="loan-interest-type" required>
+                      <option value="reducing">Reducing Balance (Balance Amount Interest)</option>
+                      <option value="daily_reducing">Daily Reducing (Daily Rest)</option>
+                      <option value="flat">Fixed Interest (Flat Rate)</option>
+                    </select>
+                  </div>
+                  <div class="form-group form-group-full">
+                    <label for="loan-start-date">Start Date</label>
+                    <input type="date" id="loan-start-date" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Loan Profile</button>
+              </form>
+            </div>
+
+            <!-- Active Loans Selection & Payoff simulation -->
+            <div class="card" id="loan-details-card" style="display: none;">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Loan Profile Details</h3>
+              <div class="form-group mb-1">
+                <label for="loan-selector">Select Loan Profile</label>
+                <select id="loan-selector" onchange="switchActiveLoan(this.value)">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+
+              <!-- Static/Current Stats -->
+              <div id="active-loan-stats">
+                <div class="loan-stat" style="align-items: center; justify-content: space-between;">
+                  <span class="loan-stat-label">Calculation Type:</span>
+                  <select id="loan-stat-interest-type" onchange="handleLoanTypeChange(this.value)" style="padding: 0.35rem 0.5rem; font-size: 0.8rem; background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); max-width: 60%; cursor: pointer;">
+                    <option value="reducing">Reducing Balance (Balance Amount Interest)</option>
+                    <option value="daily_reducing">Daily Reducing (Daily Rest)</option>
+                    <option value="flat">Fixed Interest (Flat Rate)</option>
+                  </select>
+                </div>
+                <div class="loan-stat">
+                  <span class="loan-stat-label">Minimum Monthly Payment:</span>
+                  <span class="loan-stat-val" id="loan-stat-min-payment">$0.00</span>
+                </div>
+                <div class="loan-stat">
+                  <span class="loan-stat-label">Interest Paid Over Term:</span>
+                  <span class="loan-stat-val" id="loan-stat-total-interest">$0.00</span>
+                </div>
+                <div class="loan-stat">
+                  <span class="loan-stat-label">Total Repayment Amount:</span>
+                  <span class="loan-stat-val" id="loan-stat-total-payback">$0.00</span>
+                </div>
+              </div>
+
+              <!-- Extra Payment Simulator -->
+              <div class="mt-2" style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--color-primary);">Accelerated Payoff Simulator</h4>
+                
+                <div class="form-group mb-1">
+                  <label for="loan-extra-payment">Additional Monthly Payment</label>
+                  <input type="number" id="loan-extra-payment" min="0" step="10" placeholder="0" oninput="recalculateAmortization()">
+                </div>
+
+                <div class="form-grid mb-1" style="grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+                  <div class="form-group">
+                    <label for="loan-lumpsum-amount">Lump Sum Pay</label>
+                    <input type="number" id="loan-lumpsum-amount" min="0" step="100" placeholder="e.g. 5000" oninput="recalculateAmortization()">
+                  </div>
+                  <div class="form-group">
+                    <label for="loan-lumpsum-month">At Month #</label>
+                    <input type="number" id="loan-lumpsum-month" min="1" placeholder="e.g. 6" oninput="recalculateAmortization()">
+                  </div>
+                </div>
+
+                <div class="loan-stat">
+                  <span class="loan-stat-label">Simulated Term Saved:</span>
+                  <span class="loan-stat-val" style="color: var(--color-success);" id="loan-stat-saved-months">0 months</span>
+                </div>
+                <div class="loan-stat">
+                  <span class="loan-stat-label">Simulated Interest Saved:</span>
+                  <span class="loan-stat-val" style="color: var(--color-success);" id="loan-stat-saved-interest">$0.00</span>
+                </div>
+              </div>
+
+              <!-- Reducing Balance Educational Note -->
+              <div class="mt-2" style="border-top: 1px solid var(--border-color); padding-top: 1rem; font-size: 0.8rem; line-height: 1.4; color: var(--text-muted);">
+                <span style="font-weight: 600; color: var(--color-info); display: block; margin-bottom: 0.25rem;">ℹ️ Reducing Balance & Interest Accrual</span>
+                In a reducing balance loan, interest is calculated on the outstanding balance remaining after each monthly payment. When you pay for some months, the outstanding amount reduces, meaning less interest is added in each subsequent period. Making an extra monthly or lump-sum payment reduces the balance immediately, resulting in lower interest added and shorter loan duration.
+              </div>
+
+              <button class="btn btn-danger mt-1 btn-inline" style="width: auto;" id="delete-loan-btn">Delete Loan Profile</button>
+            </div>
+          </div>
+
+          <!-- Column 2: Amortization Schedule Chart and Ledger -->
+          <div class="flex-column gap-1">
+            <div id="no-loans-warning" class="card" style="text-align: center; padding: 3rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 64px; height: 64px; color: var(--text-muted); margin: 0 auto 1.5rem;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+              <h3>No Active Loans Found</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem; max-width: 320px; margin-left: auto; margin-right: auto;">
+                Create a loan profile to see the payment schedule, amortization projection, and simulation metrics.
+              </p>
+            </div>
+
+            <!-- Loan Visualization Chart -->
+            <div class="card mb-1" id="loan-chart-card" style="display: none;">
+              <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Remaining Balance Projection</h3>
+              <div class="chart-container" style="min-height: 200px;">
+                <canvas id="loanBalanceChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Amortization Schedule Table -->
+            <div class="card" id="loan-amortization-card" style="display: none;">
+              <div class="schedule-header">
+                <h3 style="font-size: 1.1rem; font-weight: 600;">Amortization Schedule</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);" id="amortization-info">Monthly Breakdown</span>
+              </div>
+              <div class="table-container amortization-list">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Month</th>
+                      <th>Payment</th>
+                      <th>Principal</th>
+                      <th>Interest</th>
+                      <th>Total Interest Added</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="loan-amortization-body">
+                    <!-- Amortization rows inserted dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB: ACCOUNTING & NET WORTH -->
+      <!-- ============================================== -->
+      <section id="tab-accounting" class="tab-content">
+        <div class="balance-sheet">
+          
+          <!-- Column 1: Assets Ledger -->
+          <div class="card">
+            <div class="flex-between mb-1">
+              <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--color-success);">Assets</h3>
+              <span class="category-tag tag-salary" style="font-size: 0.8rem;">Cash, Checking, Investment, Properties</span>
+            </div>
+            
+            <form id="asset-form" onsubmit="handleAssetSubmit(event)" class="mb-2" style="background-color: rgba(255,255,255,0.01); border: 1px dashed var(--border-color); padding: 1rem; border-radius: var(--border-radius-sm);">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="asset-name">Asset Name</label>
+                  <input type="text" id="asset-name" placeholder="e.g., Primary Checking, Stocks" required>
+                </div>
+                <div class="form-group">
+                  <label for="asset-type">Subcategory</label>
+                  <select id="asset-type" required>
+                    <option value="Cash/Checking">Cash / Checking</option>
+                    <option value="Savings">Savings Account</option>
+                    <option value="Investments">Investments / Stocks</option>
+                    <option value="Real Estate">Real Estate / Property</option>
+                    <option value="Other Assets">Other Assets</option>
+                  </select>
+                </div>
+                <div class="form-group form-group-full">
+                  <label for="asset-value">Current Value ($)</label>
+                  <input type="number" step="0.01" min="0" id="asset-value" placeholder="0.00" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success">Add Asset</button>
+            </form>
+
+            <div class="ledger-list" id="assets-list">
+              <!-- Dynamically loaded assets -->
+            </div>
+
+            <div class="ledger-summary-row" style="color: var(--color-success);">
+              <span>Total Assets</span>
+              <span id="total-assets-val">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Column 2: Liabilities Ledger -->
+          <div class="card">
+            <div class="flex-between mb-1">
+              <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--color-danger);">Liabilities</h3>
+              <span class="category-tag tag-rent" style="font-size: 0.8rem;">Credit Cards, Loans, Mortgages</span>
+            </div>
+
+            <form id="liability-form" onsubmit="handleLiabilitySubmit(event)" class="mb-2" style="background-color: rgba(255,255,255,0.01); border: 1px dashed var(--border-color); padding: 1rem; border-radius: var(--border-radius-sm);">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="liability-name">Liability Name</label>
+                  <input type="text" id="liability-name" placeholder="e.g., Visa Credit Card, Car Loan" required>
+                </div>
+                <div class="form-group">
+                  <label for="liability-type">Subcategory</label>
+                  <select id="liability-type" required>
+                    <option value="Credit Card">Credit Card Debt</option>
+                    <option value="Personal Loan">Personal Loan</option>
+                    <option value="Mortgage">Real Estate Mortgage</option>
+                    <option value="Student Loan">Student Loan</option>
+                    <option value="Other Liabilities">Other Liability</option>
+                  </select>
+                </div>
+                <div class="form-group form-group-full">
+                  <label for="liability-value">Outstanding Balance ($)</label>
+                  <input type="number" step="0.01" min="0" id="liability-value" placeholder="0.00" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-danger">Add Liability</button>
+            </form>
+
+            <div class="ledger-list" id="liabilities-list">
+              <!-- Dynamically loaded liabilities -->
+            </div>
+
+            <div class="ledger-summary-row" style="color: var(--color-danger);">
+              <span>Total Liabilities</span>
+              <span id="total-liabilities-val">$0.00</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB: REPORTS & EXPORTS -->
+      <!-- ============================================== -->
+      <section id="tab-reports" class="tab-content">
+        <div class="card mb-1">
+          <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Monthly Statement & Report Center</h3>
+          <p class="mb-2" style="color: var(--text-muted); font-size: 0.9rem;">
+            Generate and export custom summaries of your budget, transaction logs, assets, liabilities, and amortization schedules.
+          </p>
+
+          <div style="background-color: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--border-radius-sm); margin-bottom: 2rem;">
+            <h4 class="mb-1" style="font-size: 0.95rem; font-weight: 600; color: var(--color-primary);">Export Console</h4>
+            
+            <div class="form-grid" style="margin-bottom: 1.25rem;">
+              <div class="form-group">
+                <label for="report-month">Statement Month</label>
+                <select id="report-month">
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5" selected>June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="report-year">Statement Year</label>
+                <input type="number" id="report-year" value="2026" min="2000" max="2100">
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="report-format">Choose Report Format</label>
+                <select id="report-format" onchange="updateReportDescription(this.value)">
+                  <option value="pdf">PDF Statement (.pdf)</option>
+                  <option value="csv">Excel Spreadsheet (.csv)</option>
+                  <option value="doc">Word Document (.doc)</option>
+                  <option value="png">PNG Chart Graphics (.png)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dynamic Description Card -->
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--border-radius-sm); margin-bottom: 1.5rem;">
+              <h5 style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; letter-spacing: 0.5px;">Format Details</h5>
+              <p id="report-format-desc" style="color: var(--text-main); font-size: 0.85rem; line-height: 1.5;">
+                Generates a professional printable financial statement. Opens directly in the browser print/PDF layout.
+              </p>
+            </div>
+
+            <button id="report-export-btn" class="btn btn-primary" onclick="triggerReportExport()">
+              Generate & Save PDF Statement
+            </button>
+          </div>
+        </div>
+
+        <div class="card danger-zone">
+          <h3 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">Danger Zone</h3>
+          <p class="mb-2" style="color: var(--text-muted); font-size: 0.9rem;">
+            Clearing the database will delete all local accounts, active budgets, transaction logs, and amortization trackers. This operation is permanent and cannot be undone.
+          </p>
+          <button class="btn btn-danger btn-inline" style="width: auto;" onclick="resetLocalStorage()">Clear All Local Data</button>
+        </div>
+      </section>
+
+      <!-- Print Container Overlay -->
+      <div id="print-report-container" class="print-only"></div>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 20px; height: 20px;">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span id="toast-message">Success! Ledger updated.</span>
+  </div>
+
+  <!-- Javascript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
